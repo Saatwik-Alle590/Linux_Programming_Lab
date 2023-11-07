@@ -1,0 +1,98 @@
+Q1) write a awk script to find the number of characters,words and lines in a file
+CODE:
+
+awk 'BEGIN {char=0;words=0;lines=0;}
+	{
+	lines++;
+	words+= NF;
+	char+=length($0);
+	}
+	END {
+	print "Number of Characters: " char;
+	print "Number of words: " words;
+        print "Number of lines: " lines;
+	}' hi.txt
+
+Output:
+
+Number of Characters: 16
+Number of words: 3
+Number of lines: 2
+
+
+Q2) write a c program that makes a copy of a file using standard i/o and system calls
+
+Code:
+#include <stdio.h>
+
+#define BUF_SIZE 1024
+
+int main() {
+    FILE *f1, *f2;
+    char buffer[BUF_SIZE];
+    size_t bytes;
+
+    f1 = fopen("f1.txt", "r");
+    if (f1 == NULL) {
+        perror("Error opening f1 file");
+        return 1;
+    }
+
+    f2 = fopen("f2.txt", "w");
+    if (f2 == NULL) {
+        fclose(f1);
+        perror("Error opening target file");
+        return 1;
+    }
+
+    while ((bytes = fread(buffer, 1, BUF_SIZE, f1)) > 0) {
+        fwrite(buffer, 1, bytes, f2);
+    }
+
+    printf("File copied successfully.\n");
+
+    fclose(f1);
+    fclose(f2);
+
+    return 0;
+}
+
+Q3) Implement in c the following Unix commands using system calls A) cat B)mv
+MV)
+code:
+#include <stdio.h>
+
+int main() {
+    FILE *src, *dest;
+    char ch;
+
+    src = fopen("f1.txt", "r");
+    if (src == NULL) {
+        perror("Error opening f1 file");
+        return 1;
+    }
+
+
+    while ((ch = fgetc(src)) != EOF) {
+        printf("%c",ch);
+    }
+
+    fclose(src);
+
+    return 0;
+}
+
+B)MV
+
+Code:
+#include <stdio.h>
+
+int main() {
+	const char* src = "f1.txt";
+	const char* dest = "f2.txt";
+	if (rename(src, dest) == 0) {
+		printf("file moved succesfully");
+	} else {
+		printf("Error");
+	}
+}
